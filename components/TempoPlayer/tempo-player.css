@@ -1,0 +1,178 @@
+.tempo-player {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(.75rem, 1.6vw, 1.1rem);
+  padding: .45rem .6rem .45rem .45rem;
+  color: #fff4e6;
+  background: linear-gradient(104deg, rgba(78, 40, 25, .6), rgba(28, 14, 9, .58));
+  border: 1px solid rgba(255, 233, 208, .24);
+  border-radius: 999px;
+  box-shadow: 0 18px 48px rgba(16, 7, 3, .4), inset 0 1px 0 rgba(255, 246, 234, .18);
+  backdrop-filter: blur(30px) saturate(135%);
+  -webkit-backdrop-filter: blur(30px) saturate(135%);
+}
+
+/* ---------- artwork ---------- */
+.art { position: relative; width: 56px; height: 56px; flex: none; }
+.art img {
+  width: 100%; height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 6px 18px rgba(14, 6, 3, .45);
+}
+.art-ring { position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(255, 240, 222, .34); box-shadow: inset 0 0 0 4px rgba(20, 10, 6, .16); }
+.art-ring::after { content: ""; position: absolute; inset: 46%; border-radius: 50%; background: rgba(255, 244, 230, .82); box-shadow: 0 0 0 2px rgba(24, 12, 6, .35); }
+/* The animation always runs so pausing freezes the disc where it is, rather than snapping to 0deg. */
+.art img { animation: tempo-spin 18s linear infinite; animation-play-state: paused; }
+.art.spinning img { animation-play-state: running; }
+@keyframes tempo-spin { to { transform: rotate(360deg); } }
+
+/* ---------- track meta ---------- */
+.track-info { min-width: 0; }
+.track-info h2 {
+  margin: 0 0 .12rem;
+  overflow: hidden;
+  font-size: clamp(.86rem, 1.15vw, .96rem);
+  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: -.015em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.track-info p {
+  margin: 0;
+  overflow: hidden;
+  color: rgba(255, 244, 230, .58);
+  font-size: .73rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.scrub { display: flex; align-items: center; gap: .6rem; margin-top: .38rem; }
+.times { flex: none; color: rgba(255, 244, 230, .55); font-family: var(--font-mono), ui-monospace, monospace; font-size: .63rem; font-variant-numeric: tabular-nums; }
+.times b { color: rgba(255, 244, 230, .9); font-weight: 400; }
+
+/* ---------- range inputs ---------- */
+.tempo-player input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 14px;
+  margin: 0;
+  background: none;
+  cursor: pointer;
+}
+.tempo-player input[type=range]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #fff4e6 var(--p, 0%), rgba(255, 244, 230, .24) var(--p, 0%));
+}
+.tempo-player input[type=range]::-moz-range-track { height: 4px; border-radius: 999px; background: rgba(255, 244, 230, .24); }
+.tempo-player input[type=range]::-moz-range-progress { height: 4px; border-radius: 999px; background: #fff4e6; }
+.tempo-player input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 11px; height: 11px;
+  margin-top: -3.5px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff4e6;
+  box-shadow: 0 1px 5px rgba(14, 6, 3, .5);
+  opacity: 0;
+  transition: opacity .18s ease;
+}
+.tempo-player input[type=range]::-moz-range-thumb { width: 11px; height: 11px; border: 0; border-radius: 50%; background: #fff4e6; opacity: 0; transition: opacity .18s ease; }
+.tempo-player:hover input[type=range]::-webkit-slider-thumb,
+.tempo-player input[type=range]:focus-visible::-webkit-slider-thumb { opacity: 1; }
+.tempo-player:hover input[type=range]::-moz-range-thumb,
+.tempo-player input[type=range]:focus-visible::-moz-range-thumb { opacity: 1; }
+
+/* ---------- controls ---------- */
+.controls { display: flex; align-items: center; gap: .2rem; }
+.controls .ghost {
+  display: grid;
+  place-items: center;
+  width: 30px; height: 30px;
+  padding: 0;
+  color: rgba(255, 244, 230, .82);
+  background: none;
+  border: 0;
+  border-radius: 50%;
+  transition: color .18s ease, background .18s ease;
+}
+.controls .ghost:hover { color: #fff; background: rgba(255, 240, 222, .12); }
+.controls svg { width: 17px; height: 17px; fill: currentColor; }
+.controls .play {
+  display: grid;
+  place-items: center;
+  width: 44px; height: 44px;
+  margin: 0 .15rem;
+  padding: 0;
+  color: #1c0e08;
+  background: #fff6ec;
+  border: 0;
+  border-radius: 50%;
+  box-shadow: 0 6px 18px rgba(16, 7, 3, .32);
+  transition: transform .16s ease, background .16s ease;
+}
+.controls .play:hover { transform: scale(1.06); }
+.controls .play:disabled { opacity: .55; cursor: progress; }
+.controls .play svg { width: 19px; height: 19px; }
+
+.counter {
+  margin-right: .5rem;
+  padding: .2rem .42rem;
+  color: rgba(255, 244, 230, .62);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: .6rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .06em;
+  border: 1px solid rgba(255, 233, 208, .22);
+  border-radius: 5px;
+}
+.counter i { margin: 0 .1em; font-style: normal; opacity: .5; }
+.volume { display: flex; align-items: center; gap: .1rem; }
+.volume input[type=range] {
+  width: 0;
+  opacity: 0;
+  transition: width .24s ease, opacity .24s ease, margin .24s ease;
+}
+.volume:hover input[type=range],
+.volume:focus-within input[type=range] { width: 58px; margin: 0 .35rem 0 .1rem; opacity: 1; }
+
+/* ---------- states ---------- */
+.youtube-frame { position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; }
+.youtube-frame div { width: 320px; height: 180px; }
+.ready { position: absolute; left: 2rem; bottom: -1.35rem; color: rgba(255, 244, 230, .5); font-family: var(--font-mono), ui-monospace, monospace; font-size: .62rem; letter-spacing: .04em; }
+.is-message {
+  grid-template-columns: auto 1fr;
+  gap: .85rem;
+  min-height: 88px;
+  padding: 1rem 1.6rem;
+  color: rgba(255, 244, 230, .84);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: .76rem;
+  line-height: 1.5;
+  border-radius: 44px;
+}
+.player-error { color: #ffd8ac; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: #ff9f6b; box-shadow: 0 0 12px #ff9f6b; }
+.loading-disc { width: 22px; height: 22px; border: 2px solid rgba(255, 244, 230, .85); border-top-color: transparent; border-radius: 50%; animation: tempo-spin 1s linear infinite; }
+
+@media (max-width: 700px) {
+  .tempo-player {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: .75rem;
+    padding: .6rem .85rem .75rem;
+    border-radius: 26px;
+  }
+  .art { width: 50px; height: 50px; }
+  .art-ring { box-shadow: inset 0 0 0 3px rgba(20, 10, 6, .16); }
+  .scrub { margin-top: .4rem; }
+  .controls { grid-column: 1 / -1; justify-content: center; gap: .45rem; }
+  .volume, .counter { display: none; }
+  .controls .play { width: 44px; height: 44px; }
+  .ready { left: 1.3rem; }
+  .is-message { padding: .9rem 1.2rem; }
+}
