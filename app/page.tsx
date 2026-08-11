@@ -22,7 +22,6 @@ export default function Home() {
       </header>
 
       <section className="hero-title">
-        <p className="kicker"><span className="rule" aria-hidden="true" />Tempo FM</p>
         <h1>
           <span>देखो मगर</span>
           <span>प्यार से</span>
