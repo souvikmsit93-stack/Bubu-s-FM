@@ -4,7 +4,11 @@ import { ImageResponse } from "next/og";
 
 const art = `data:image/png;base64,${readFileSync(join(process.cwd(), "app/_assets/icon-art.png")).toString("base64")}`;
 
-/** The supplied artwork on a white field, ringed in the green sampled from the auto in bg.png. */
+/**
+ * The supplied favicon.png is a transparent cut-out, which is why it vanished against
+ * dark browser chrome. It sits on a white field, ringed in the green sampled from the
+ * auto in bg.png, so the icon has a solid silhouette at tab size.
+ */
 export function renderMark(edge: number) {
   const ring = Math.max(2, Math.round(edge * 0.07));
   return new ImageResponse(
@@ -21,7 +25,7 @@ export function renderMark(edge: number) {
           borderRadius: edge * 0.22,
         }}
       >
-        <img src={art} width={edge - ring * 4} style={{ objectFit: "contain" }} alt="" />
+        <img src={art} width={Math.round(edge - ring * 2.5)} style={{ objectFit: "contain" }} alt="" />
       </div>
     ),
     { width: edge, height: edge },
