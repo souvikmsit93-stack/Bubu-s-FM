@@ -10,7 +10,8 @@ const csp = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' https://www.youtube.com https://s.ytimg.com https://www.googletagmanager.com",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: https://i.ytimg.com https://yt3.ggpht.com https://*.google-analytics.com",
+  // googletagmanager is in img-src too: gtag reports some signals via a tracking pixel.
+  "img-src 'self' data: https://i.ytimg.com https://yt3.ggpht.com https://*.google-analytics.com https://www.googletagmanager.com",
   "font-src 'self'",
   "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
   "frame-src https://www.youtube.com https://www.youtube-nocookie.com",
