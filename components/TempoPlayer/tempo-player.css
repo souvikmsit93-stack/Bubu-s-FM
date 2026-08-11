@@ -3,19 +3,20 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: clamp(.75rem, 1.6vw, 1.1rem);
-  padding: .45rem .6rem .45rem .45rem;
+  gap: clamp(.9rem, 1.8vw, 1.3rem);
+  padding: .65rem .85rem .65rem .65rem;
   color: #fff4e6;
-  background: linear-gradient(104deg, rgba(78, 40, 25, .6), rgba(28, 14, 9, .58));
-  border: 1px solid rgba(255, 233, 208, .24);
+  background: linear-gradient(104deg, rgba(84, 44, 28, .42), rgba(30, 15, 10, .4));
+  border: 1px solid rgba(255, 233, 208, .26);
   border-radius: 999px;
-  box-shadow: 0 18px 48px rgba(16, 7, 3, .4), inset 0 1px 0 rgba(255, 246, 234, .18);
-  backdrop-filter: blur(30px) saturate(135%);
-  -webkit-backdrop-filter: blur(30px) saturate(135%);
+  box-shadow: 0 20px 54px rgba(16, 7, 3, .42), inset 0 1px 0 rgba(255, 246, 234, .2);
+  /* No manual -webkit- twin here: the minifier collapses the pair and keeps only
+     the prefixed one, which modern Chrome no longer supports. It adds prefixes itself. */
+  backdrop-filter: blur(48px) saturate(150%);
 }
 
 /* ---------- artwork ---------- */
-.art { position: relative; width: 56px; height: 56px; flex: none; }
+.art { position: relative; width: 68px; height: 68px; flex: none; }
 .art img {
   width: 100%; height: 100%;
   display: block;
@@ -35,9 +36,9 @@
 .track-info h2 {
   margin: 0 0 .12rem;
   overflow: hidden;
-  font-size: clamp(.86rem, 1.15vw, .96rem);
+  font-size: clamp(.92rem, 1.35vw, 1.04rem);
   font-weight: 600;
-  line-height: 1.22;
+  line-height: 1.24;
   letter-spacing: -.015em;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -46,12 +47,12 @@
   margin: 0;
   overflow: hidden;
   color: rgba(255, 244, 230, .58);
-  font-size: .73rem;
+  font-size: .78rem;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.scrub { display: flex; align-items: center; gap: .6rem; margin-top: .38rem; }
-.times { flex: none; color: rgba(255, 244, 230, .55); font-family: var(--font-mono), ui-monospace, monospace; font-size: .63rem; font-variant-numeric: tabular-nums; }
+.scrub { display: flex; align-items: center; gap: .65rem; margin-top: .5rem; }
+.times { flex: none; color: rgba(255, 244, 230, .58); font-family: var(--font-mono), ui-monospace, monospace; font-size: .67rem; font-variant-numeric: tabular-nums; }
 .times b { color: rgba(255, 244, 230, .9); font-weight: 400; }
 
 /* ---------- range inputs ---------- */
@@ -89,11 +90,11 @@
 .tempo-player input[type=range]:focus-visible::-moz-range-thumb { opacity: 1; }
 
 /* ---------- controls ---------- */
-.controls { display: flex; align-items: center; gap: .2rem; }
+.controls { display: flex; align-items: center; gap: .26rem; }
 .controls .ghost {
   display: grid;
   place-items: center;
-  width: 30px; height: 30px;
+  width: 34px; height: 34px;
   padding: 0;
   color: rgba(255, 244, 230, .82);
   background: none;
@@ -102,12 +103,12 @@
   transition: color .18s ease, background .18s ease;
 }
 .controls .ghost:hover { color: #fff; background: rgba(255, 240, 222, .12); }
-.controls svg { width: 17px; height: 17px; fill: currentColor; }
+.controls svg { width: 19px; height: 19px; fill: currentColor; }
 .controls .play {
   display: grid;
   place-items: center;
-  width: 44px; height: 44px;
-  margin: 0 .15rem;
+  width: 52px; height: 52px;
+  margin: 0 .18rem;
   padding: 0;
   color: #1c0e08;
   background: #fff6ec;
@@ -118,7 +119,7 @@
 }
 .controls .play:hover { transform: scale(1.06); }
 .controls .play:disabled { opacity: .55; cursor: progress; }
-.controls .play svg { width: 19px; height: 19px; }
+.controls .play svg { width: 22px; height: 22px; }
 
 .counter {
   margin-right: .5rem;
@@ -163,16 +164,16 @@
 @media (max-width: 700px) {
   .tempo-player {
     grid-template-columns: auto minmax(0, 1fr);
-    gap: .75rem;
-    padding: .6rem .85rem .75rem;
-    border-radius: 26px;
+    gap: .8rem;
+    padding: .7rem .95rem .85rem;
+    border-radius: 30px;
   }
-  .art { width: 50px; height: 50px; }
-  .art-ring { box-shadow: inset 0 0 0 3px rgba(20, 10, 6, .16); }
-  .scrub { margin-top: .4rem; }
-  .controls { grid-column: 1 / -1; justify-content: center; gap: .45rem; }
+  .art { width: 58px; height: 58px; }
+  .art-ring { box-shadow: inset 0 0 0 4px rgba(20, 10, 6, .16); }
+  .scrub { margin-top: .45rem; }
+  .controls { grid-column: 1 / -1; justify-content: center; gap: .5rem; }
   .volume, .counter { display: none; }
-  .controls .play { width: 44px; height: 44px; }
+  .controls .play { width: 50px; height: 50px; }
   .ready { left: 1.3rem; }
   .is-message { padding: .9rem 1.2rem; }
 }
