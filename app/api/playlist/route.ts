@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 type YouTubeItem = { snippet: { resourceId?: { videoId?: string }; title: string; videoOwnerChannelTitle?: string; channelTitle: string; position: number; thumbnails?: Record<string, { url: string }> } };
-type Video = { id: string; contentDetails?: { duration?: string }; snippet?: { channelTitle?: string } };
+type Video = { id: string; contentDetails?: { duration?: string }; snippet?: { channelTitle?: string; description?: string } };
 
 function playlistId(url: string) {
   try { return new URL(url).searchParams.get("list"); } catch { return null; }
@@ -10,6 +10,19 @@ function duration(seconds: string | undefined) {
   const match = seconds?.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
   return match ? (+match[1] || 0) * 3600 + (+match[2] || 0) * 60 + (+match[3] || 0) : undefined;
 }
+
+/**
+ * Auto-generated music uploads credit the artists in the description, on the line
+ * after "Provided to YouTube by", formatted as "Title · Artist · Artist". The
+ * uploading channel is no help there — it is often a generic one like "Release - Topic".
+ */
+function creditedArtists(description: string | undefined) {
+  const line = description?.split("\n").find((text) => text.includes(" · "));
+  const parts = line?.split(" · ").map((part) => part.trim()).filter(Boolean);
+  return parts && parts.length > 1 ? parts.slice(1).join(", ") : undefined;
+}
+
+const withoutTopic = (name: string | undefined) => name?.replace(/\s+-\s+Topic$/, "").trim() || undefined;
 
 export async function GET() {
   const url = process.env.NEXT_PUBLIC_YOUTUBE_PLAYLIST_URL;
@@ -37,7 +50,11 @@ export async function GET() {
     return NextResponse.json({ playlistId: id, tracks: items.map(({ snippet }) => {
       const videoId = snippet.resourceId?.videoId!; const video = details.get(videoId);
       const art = snippet.thumbnails?.maxres || snippet.thumbnails?.standard || snippet.thumbnails?.high || snippet.thumbnails?.medium || snippet.thumbnails?.default;
-      return { videoId, title: snippet.title, channel: snippet.videoOwnerChannelTitle || video?.snippet?.channelTitle || snippet.channelTitle, position: snippet.position, thumbnail: art?.url, duration: duration(video?.contentDetails?.duration) };
+      const artist = creditedArtists(video?.snippet?.description)
+        || withoutTopic(video?.snippet?.channelTitle)
+        || withoutTopic(snippet.videoOwnerChannelTitle)
+        || snippet.channelTitle;
+      return { videoId, title: snippet.title, artist, position: snippet.position, thumbnail: art?.url, duration: duration(video?.contentDetails?.duration) };
     }).filter((track) => details.has(track.videoId)) });
   } catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : "Could not load playlist." }, { status: 502 }); }
 }

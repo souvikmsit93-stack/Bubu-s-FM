@@ -34,7 +34,7 @@ export default function TempoPlayer() {
   useEffect(() => { if (!ready) return; player.current?.setVolume(muted ? 0 : volume); muted ? player.current?.mute() : player.current?.unMute(); }, [volume, muted, ready]);
   const seek = (value: number) => { player.current?.seekTo(value, true); setTime(value); };
   const toggle = () => playing ? player.current?.pauseVideo() : player.current?.playVideo();
-  const previous = () => time > 3 ? seek(0) : choose(index - 1);
+  const previous = () => choose(index - 1);
 
   if (error) return <aside className="tempo-player is-message player-error"><span className="dot" />{error}</aside>;
   if (!track) return <aside className="tempo-player is-message"><span className="loading-disc" />Tuning into the Tempo…</aside>;
@@ -48,7 +48,7 @@ export default function TempoPlayer() {
 
     <div className="track-info">
       <h2 title={track.title}>{track.title}</h2>
-      <p>{track.channel}</p>
+      <p>{track.artist}</p>
       <div className="scrub" style={{ ["--p" as string]: `${progress}%` }}>
         <input aria-label="Track progress" type="range" min="0" max={duration || 1} step="0.5" value={time} onChange={e => seek(+e.target.value)} />
         <span className="times"><b>{asTime(time)}</b> / {asTime(duration)}</span>
