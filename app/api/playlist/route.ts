@@ -24,9 +24,14 @@ function creditedArtists(description: string | undefined) {
 
 const withoutTopic = (name: string | undefined) => name?.replace(/\s+-\s+Topic$/, "").trim() || undefined;
 
+/** Cache the whole response, so bursts of traffic cost one upstream call per window. */
+export const revalidate = 300;
+
 export async function GET() {
   const url = process.env.NEXT_PUBLIC_YOUTUBE_PLAYLIST_URL;
-  const key = process.env.YOUTUBE_DATA_API_KEY || process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
+  // Server-only. Never fall back to a NEXT_PUBLIC_* name — those are inlined into the
+  // client bundle at build time, which would hand the key to every visitor.
+  const key = process.env.YOUTUBE_DATA_API_KEY;
   const id = url && playlistId(url);
   if (!id || !key) return NextResponse.json({ error: "Set NEXT_PUBLIC_YOUTUBE_PLAYLIST_URL and YOUTUBE_DATA_API_KEY to load Tempo FM." }, { status: 500 });
   try {
@@ -56,5 +61,10 @@ export async function GET() {
         || snippet.channelTitle;
       return { videoId, title: snippet.title, artist, position: snippet.position, thumbnail: art?.url, duration: duration(video?.contentDetails?.duration) };
     }).filter((track) => details.has(track.videoId)) });
-  } catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : "Could not load playlist." }, { status: 502 }); }
+  } catch (error) {
+    // Log the detail, return a fixed string: an unexpected fetch failure can carry the
+    // request URL — and therefore the key — in its message.
+    console.error("playlist fetch failed", error);
+    return NextResponse.json({ error: "Could not load the playlist right now." }, { status: 502 });
+  }
 }
