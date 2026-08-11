@@ -56,7 +56,6 @@ export default function TempoPlayer() {
     </div>
 
     <div className="controls">
-      <span className="counter">{String(index + 1).padStart(2, "0")}<i>/</i>{tracks.length}</span>
       <div className="volume" style={{ ["--p" as string]: `${muted ? 0 : volume}%` }}>
         <button className="ghost" onClick={() => setMuted(!muted)} aria-label={muted ? "Unmute" : "Mute"}><Speaker off={muted} /></button>
         <input aria-label="Volume" type="range" min="0" max="100" value={muted ? 0 : volume} onChange={e => { setVolume(+e.target.value); setMuted(+e.target.value === 0); }} />
