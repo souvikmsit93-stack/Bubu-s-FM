@@ -19,7 +19,7 @@ button { cursor: pointer; }
   display: flex;
   flex-direction: column;
   min-height: 100svh;
-  padding: 0 clamp(1rem, 3.4vw, 3.2rem) clamp(1.6rem, 5vh, 3rem);
+  padding: 0 clamp(1rem, 3.4vw, 3.2rem) clamp(3.4rem, 10vh, 6.5rem);
   overflow: hidden;
 }
 .backdrop { position: absolute; inset: 0; z-index: -1; }

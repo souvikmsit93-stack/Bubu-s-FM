@@ -2,10 +2,11 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
-const font = readFileSync(join(process.cwd(), "app/_assets/YatraOne-Regular.ttf"));
+const art = `data:image/png;base64,${readFileSync(join(process.cwd(), "app/_assets/icon-art.png")).toString("base64")}`;
 
-/** टे — the first syllable of टेम्पो, sized to stay legible down to 16px. */
+/** The supplied artwork on a white field, ringed in the green sampled from the auto in bg.png. */
 export function renderMark(edge: number) {
+  const ring = Math.max(2, Math.round(edge * 0.07));
   return new ImageResponse(
     (
       <div
@@ -16,18 +17,13 @@ export function renderMark(edge: number) {
           width: "100%",
           height: "100%",
           background: "#ffffff",
-          /* The green is sampled from the auto in bg.png. */
-          color: "#2f6b33",
-          border: `${Math.round(edge * 0.07)}px solid #2f6b33`,
+          border: `${ring}px solid #2f6b33`,
           borderRadius: edge * 0.22,
-          fontFamily: "Yatra One",
-          fontSize: edge * 0.7,
-          paddingTop: edge * 0.2,
         }}
       >
-        टे
+        <img src={art} width={edge - ring * 4} style={{ objectFit: "contain" }} alt="" />
       </div>
     ),
-    { width: edge, height: edge, fonts: [{ name: "Yatra One", data: font, weight: 400, style: "normal" }] },
+    { width: edge, height: edge },
   );
 }
