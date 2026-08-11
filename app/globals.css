@@ -83,7 +83,9 @@ button { cursor: pointer; }
   margin: 0;
   font-family: var(--font-display), serif;
   font-weight: 400;
-  font-size: clamp(3.7rem, 11.6vw, 9.8rem);
+  /* 22.5vw keeps the longest line filling most of the measure on a phone, and hits
+     the 9.8rem ceiling around 700px so desktop is unchanged. */
+  font-size: clamp(4.4rem, 22.5vw, 9.8rem);
   /* .74 is the tightest setting where the two lines interlock without their ink
      actually touching — below this the े matra of line two clips into line one. */
   line-height: .74;
