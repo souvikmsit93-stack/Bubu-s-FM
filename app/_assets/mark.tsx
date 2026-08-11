@@ -15,11 +15,14 @@ export function renderMark(edge: number) {
           justifyContent: "center",
           width: "100%",
           height: "100%",
-          background: "#b23324",
-          color: "#fff4e6",
+          background: "#ffffff",
+          /* The green is sampled from the auto in bg.png. */
+          color: "#2f6b33",
+          border: `${Math.round(edge * 0.07)}px solid #2f6b33`,
+          borderRadius: edge * 0.22,
           fontFamily: "Yatra One",
-          fontSize: edge * 0.82,
-          paddingTop: edge * 0.26,
+          fontSize: edge * 0.7,
+          paddingTop: edge * 0.2,
         }}
       >
         टे
